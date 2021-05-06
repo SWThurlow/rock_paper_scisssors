@@ -23,6 +23,30 @@ function playerSelection(){
         playerSelection()
         return
         }
-    console.log(choice)
+    console.log(`Player: ${choice}`)
     return choice;
+}
+
+//Game logic, comparing the return values from playerSelection and computerSelection.
+function playRound(){
+    //Had to put playerChoice first to remove player being able to see the computerSelection output.
+    let playerChoice = playerSelection();
+    let compChoice = computerSelection();
+    if(compChoice === playerChoice){
+        console.log("Draw");
+        draws++;
+        return 
+    } else if((compChoice === "rock" && playerChoice === "scissors") || 
+                (compChoice === "scissors" && playerChoice === "paper") || 
+                (compChoice === "paper" && playerChoice === "rock")){
+                    console.log("Computer Wins!");
+                    computerWins++;
+                    return
+    }else if((playerChoice === "rock" && compChoice === "scissors") || 
+                (playerChoice === "scissors" && compChoice === "paper") || 
+                (playerChoice === "paper" && compChoice === "rock")){
+                    console.log("Player Wins!");
+                    playerWins++;
+                    return
+    }
 }
