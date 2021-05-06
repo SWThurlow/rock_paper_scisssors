@@ -17,6 +17,10 @@ const playLog = document.querySelector('.playLog')
 //Event Listeners for game start.
 gameStart.addEventListener('click', game);
 
+//Play again.
+function playAgain(){
+    window.location.reload();
+}
 
 //Computer's choice.
 function computerSelection(){
@@ -30,30 +34,48 @@ function computerSelection(){
     return options[choice]
 }
 
+//Player's choice.
+function playerSelection(move){
+    playerChoice = move;
+    playRound();
+    if(totalRounds === 5){
+        endGame();
+    }
+}
+
 //Game logic, comparing the return values from playerSelection and computerSelection.
 function playRound(){
     //Had to put playerChoice first to remove player being able to see the computerSelection output.
     let compChoice = computerSelection();
 
-    //Tally of round played increase.
-    totalRounds++
-
     //Figuring out who won this round.
     if(compChoice === playerChoice){
-        comentary.innerHTML = `Draw!`;
         draws++;
+        totalRounds++
+        comentary.innerHTML = `Draw!`;
+        let logEntry = document.createElement('p');
+        logEntry.innerHTML = `Draws: ${draws}, Computer Wins: ${computerWins}, Player Wins: ${playerWins}`;
+        playLog.appendChild(logEntry);
         return 
     } else if((compChoice === "rock" && playerChoice === "scissors") || 
                 (compChoice === "scissors" && playerChoice === "paper") || 
                 (compChoice === "paper" && playerChoice === "rock")){
-                    comentary.innerHTML = `The computer wins this round.`;
                     computerWins++;
+                    totalRounds++
+                    comentary.innerHTML = `The computer wins this round.`;
+                    let logEntry = document.createElement('p');
+                    logEntry.innerHTML = `Draws: ${draws}, Computer Wins: ${computerWins}, Player Wins: ${playerWins}`;
+                     playLog.appendChild(logEntry);
                     return
     }else if((playerChoice === "rock" && compChoice === "scissors") || 
                 (playerChoice === "scissors" && compChoice === "paper") || 
                 (playerChoice === "paper" && compChoice === "rock")){
-                    comentary.innerHTML = `You won this one!`;
                     playerWins++;
+                    totalRounds++
+                    comentary.innerHTML = `You won this one!`;
+                    let logEntry = document.createElement('p');
+                    logEntry.innerHTML = `Draws: ${draws}, Computer Wins: ${computerWins}, Player Wins: ${playerWins}`;
+                    playLog.appendChild(logEntry);
                     return
     }
 }
@@ -68,33 +90,18 @@ function game(){
 
 
     //Prompting the player.
-    comentary.innerHTML = `You move`;
+    comentary.innerHTML = `Your move.`;
 
     //Event listeners for player options.
-    rock.addEventListener('click', () => {
-        playerChoice = "rock";
-        playRound();
-        if(totalRounds === 5){
-            endGame();
-            return;
-        }
-    });
-    paper.addEventListener('click', () => {
-        playerChoice = "paper";
-        playRound();
-        if(totalRounds === 5){
-            endGame();
-            return;
-        }
-    });
-    scissors.addEventListener('click', () =>{
-        playerChoice = "scissors";
-        playRound();
-        if(totalRounds === 5){
-            endGame();
-            return;
-        }
-    });
+    rock.addEventListener('click', () => {playerSelection("rock")});
+    paper.addEventListener('click', () => {playerSelection("paper")});
+    scissors.addEventListener('click', () => {playerSelection("scissors")});
+
+    //Create play again button.
+    gameStart.classList.remove('start');
+    gameStart.classList.add('playAgain');
+    gameStart.addEventListener('click', playAgain);
+    gameStart.innerHTML = 'Play again?'
 }
 
 //Ending the game and finding out the winner.
@@ -116,30 +123,4 @@ function endGame(){
         endEntry.innerHTML = `Computer Wins: ${computerWins}, Player Wins: ${playerWins}, Draws: ${draws}`;
         playLog.appendChild(endEntry);
     }
-
-    //Removing event listeners so that the game doesnt keep going.
-    rock.removeEventListener('click', () => {
-        playerChoice = "rock";
-        playRound();
-        if(totalRounds === 5){
-            endGame();
-            return;
-        }
-    });
-    paper.removeEventListener('click', () => {
-        playerChoice = "paper";
-        playRound();
-        if(totalRounds === 5){
-            endGame();
-            return;
-        }
-    });
-    scissors.removeEventListener('click', () =>{
-        playerChoice = "scissors";
-        playRound();
-        if(totalRounds === 5){
-            endGame();
-            return;
-        }
-    });
 }
