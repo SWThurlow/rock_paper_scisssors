@@ -20,8 +20,8 @@ function playerSelection(){
     //Checking the player has picked a valid game option.
     if(choice !== "rock" && choice !== "paper" && choice !== "scissors"){
         console.log(`${choice} is not a valid move.`);
-        playerSelection()
-        return
+        choice = prompt("Rock, Paper, Scissors?");
+        choice.toLowerCase();
         }
     console.log(`Player: ${choice}`)
     return choice;
@@ -48,5 +48,29 @@ function playRound(){
                     console.log("Player Wins!");
                     playerWins++;
                     return
+    }
+}
+
+//Game to decide the best of five.
+function game(){
+    //Reseting if multiple games are played.
+    computerWins = 0;
+    playerWins = 0;
+    draws = 0;
+    //Looping over five times.
+    for(let i = 0; i <= 4; i++){
+        playRound();
+        console.log(`Draws: ${draws}, Computer Wins: ${computerWins}, Player Wins: ${playerWins}`);
+    }
+    //Deciding the overall winner.
+    if(playerWins === computerWins){
+        console.log("It's a draw!");
+        return `Draws: ${draws}, Computer Wins: ${computerWins}, Player Wins: ${playerWins}`;
+    } else if(playerWins > computerWins){
+        console.log("Player wins!");
+        return `Player Wins: ${playerWins}, Computer Wins: ${computerWins}, Draws: ${draws}`;
+    } else {
+        console.log("Computer Wins!");
+        return `Computer Wins: ${computerWins}, Player Wins: ${playerWins}, Draws: ${draws}`;
     }
 }
